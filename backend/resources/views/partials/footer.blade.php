@@ -4,7 +4,7 @@
             <a href="{{ url('/') }}" class="navbar-brand">
                 <h1 class="m-0 display-4 text-uppercase text-white"><img src="{{ secure_asset('img/logo.png') }}" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
             </a>
-            <p>Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem nonumy.</p>
+            <p>L'expertise ne se revendique pas, elle se construit.</p>
         </div>
         <div class="col-lg-6 ps-lg-5">
             <div class="row g-5">
