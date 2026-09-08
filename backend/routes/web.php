@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Front\HomeController as FrontHomeController;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 Route::get('/', [FrontHomeController::class, 'index'])->name('home');
 
 // Static pages
@@ -77,3 +80,30 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Temporary route to create an admin user in environments without shell access.
+// Usage: visit /setup-admin?secret=LONG_SECRET&email=admin@example.com&password=YourP@ss
+Route::get('/setup-admin', function (Request $request) {
+    $secret = env('ADMIN_SETUP_SECRET');
+    if (empty($secret) || $request->query('secret') !== $secret) {
+        abort(403, 'Forbidden');
+    }
+
+    $email = $request->query('email', env('ADMIN_EMAIL', 'admin@example.com'));
+    $password = $request->query('password', env('ADMIN_PASSWORD', null));
+    if (empty($password)) {
+        return response()->json(['error' => 'Password required via ADMIN_PASSWORD env or ?password=...'], 400);
+    }
+
+    $userModel = \App\Models\User::updateOrCreate(
+        ['email' => $email],
+        [
+            'name' => 'Administrateur',
+            'password' => Hash::make($password),
+            'is_admin' => true,
+            'email_verified_at' => now(),
+        ]
+    );
+
+    return response()->json(['status' => 'ok', 'email' => $userModel->email]);
+});

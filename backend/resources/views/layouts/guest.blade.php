@@ -17,11 +17,16 @@
         @endphp
         @if(file_exists($manifestPath))
             @php $manifest = json_decode(file_get_contents($manifestPath), true); @endphp
-            @if(isset($manifest['resources/css/app.css']['file']))
+            @if(isset($manifest['resources/css/app.css']['file']) && file_exists(public_path('build/'.$manifest['resources/css/app.css']['file'])))
                 <link rel="stylesheet" href="{{ secure_asset('build/'.$manifest['resources/css/app.css']['file']) }}">
+            @else
+                <link rel="stylesheet" href="{{ secure_asset('css/style.css') }}">
             @endif
-            @if(isset($manifest['resources/js/app.js']['file']))
+
+            @if(isset($manifest['resources/js/app.js']['file']) && file_exists(public_path('build/'.$manifest['resources/js/app.js']['file'])))
                 <script type="module" src="{{ secure_asset('build/'.$manifest['resources/js/app.js']['file']) }}"></script>
+            @else
+                @vite(['resources/js/app.js'])
             @endif
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -31,7 +36,11 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    @if(file_exists(public_path('img/logo.png')))
+                        <img src="{{ secure_asset('img/logo.png') }}" alt="logo" class="w-20 h-20">
+                    @else
+                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    @endif
                 </a>
             </div>
 

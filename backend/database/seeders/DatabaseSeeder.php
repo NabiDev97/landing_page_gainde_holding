@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             \Database\Seeders\PageSectionsSeeder::class,
             \Database\Seeders\HomeContentSeeder::class,
+            \Database\Seeders\AdminUserSeeder::class,
         ]);
     }
 }
