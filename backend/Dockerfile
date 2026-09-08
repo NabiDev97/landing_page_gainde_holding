@@ -1,4 +1,3 @@
-# PHP 8.3 + Apache
 FROM php:8.3-apache
 
 # ---------------------------------------------------------
@@ -22,55 +21,48 @@ RUN apt-get update \
 # ---------------------------------------------------------
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
+    && npm --version \
     && node --version \
-    && npm --version
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------
 # Composer
 # ---------------------------------------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# ---------------------------------------------------------
-# Répertoire de travail
-# ---------------------------------------------------------
 WORKDIR /var/www/html
 
 # ---------------------------------------------------------
-# Copier le projet Laravel
+# Copier Laravel
 # ---------------------------------------------------------
 COPY . .
 
 # ---------------------------------------------------------
-# Installer les dépendances PHP
+# Dépendances PHP
 # ---------------------------------------------------------
 RUN composer install \
     --no-dev \
-    --optimize-autoloader \
     --no-interaction \
-    --prefer-dist
+    --prefer-dist \
+    --optimize-autoloader
 
 # ---------------------------------------------------------
-# Installer les dépendances JavaScript
+# Dépendances JS + build Vite
 # ---------------------------------------------------------
 RUN npm install
-
-# Compiler les assets Vite
 RUN npm run build
 
 # ---------------------------------------------------------
-# Configuration Apache
-# Laravel doit être servi depuis /public
+# Apache → Laravel /public
 # ---------------------------------------------------------
-RUN sed -i \
-    's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' \
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' \
     /etc/apache2/sites-available/000-default.conf
 
-# Autoriser Apache à utiliser le .htaccess de Laravel
-RUN printf '%s\n' \
-    '<Directory /var/www/html/public>' \
-    '    AllowOverride All' \
-    '    Require all granted' \
-    '</Directory>' \
+RUN printf '<Directory /var/www/html/public>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>\n' \
     > /etc/apache2/conf-available/laravel.conf
 
 RUN a2enconf laravel
@@ -78,20 +70,26 @@ RUN a2enconf laravel
 # ---------------------------------------------------------
 # Permissions Laravel
 # ---------------------------------------------------------
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    bootstrap/cache
+
 RUN chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
+    storage \
+    bootstrap/cache
 
 RUN chmod -R 775 \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
+    storage \
+    bootstrap/cache
 
 # ---------------------------------------------------------
-# Port Apache
+# Entrypoint
 # ---------------------------------------------------------
+RUN chmod +x docker-entrypoint.sh
+
 EXPOSE 80
 
-# ---------------------------------------------------------
-# Démarrage Apache
-# ---------------------------------------------------------
-CMD ["apache2-foreground"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
