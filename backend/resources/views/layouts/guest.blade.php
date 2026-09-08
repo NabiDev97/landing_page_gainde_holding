@@ -35,6 +35,12 @@
                 </a>
             </div>
 
+            @if(!request()->secure() && request()->routeIs('login'))
+                <div class="w-full sm:max-w-md mt-4 px-4 py-3 bg-yellow-50 border border-yellow-300 text-yellow-800 rounded">
+                    <p class="text-sm">⚠️ <strong>Connexion non sécurisée :</strong> Les informations saisies vont être transmises en clair (sans chiffrement). Elles peuvent donc éventuellement être interceptées et lues lors de leur acheminement. Voulez-vous vraiment transmettre ces informations ?</p>
+                </div>
+            @endif
+
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
