@@ -1,95 +1,67 @@
+###
+# Multi-stage Dockerfile for Laravel + Vite
+###
+
+# --- Node builder: build frontend assets ---
+FROM node:20 AS node_builder
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Copy only package files to leverage Docker cache
+COPY package*.json ./
+RUN npm ci --production=false
+
+# Copy sources and build
+COPY . .
+RUN npm run build
+
+
+# --- PHP runtime image ---
 FROM php:8.3-apache
 
-# ---------------------------------------------------------
-# Extensions PHP nécessaires à Laravel + PostgreSQL
-# ---------------------------------------------------------
-RUN apt-get update \
-    && apt-get install -y \
-        libpq-dev \
-        curl \
-        git \
-        unzip \
-    && docker-php-ext-install \
-        pdo \
-        pdo_pgsql \
-    && a2enmod rewrite \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+ARG APP_ENV=production
+ENV APP_ENV=${APP_ENV}
 
-# ---------------------------------------------------------
-# Node.js 20 + npm
-# ---------------------------------------------------------
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm --version \
-    && node --version \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# System deps for PHP extensions and tools
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    zip \
+    unzip \
+    git \
+    curl \
+    libzip-dev \
+ && docker-php-ext-install pdo pdo_pgsql zip \
+ && a2enmod rewrite \
+ && rm -rf /var/lib/apt/lists/*
 
-# ---------------------------------------------------------
-# Composer
-# ---------------------------------------------------------
+# Composer (copy from official image)
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# ---------------------------------------------------------
-# Copier Laravel
-# ---------------------------------------------------------
+# Copy composer files first for better cache
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+# Copy application source
 COPY . .
 
-# ---------------------------------------------------------
-# Dépendances PHP
-# ---------------------------------------------------------
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --prefer-dist \
-    --optimize-autoloader
+# Copy built frontend assets from node_builder
+COPY --from=node_builder /app/public/build /var/www/html/public/build
 
-# ---------------------------------------------------------
-# Dépendances JS + build Vite
-# ---------------------------------------------------------
-RUN npm install
-RUN npm run build
+# Configure Apache to use Laravel public directory
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf \
+ && printf '<Directory /var/www/html/public>\n    AllowOverride All\n    Require all granted\n</Directory>\n' > /etc/apache2/conf-available/laravel.conf \
+ && a2enconf laravel
 
-# ---------------------------------------------------------
-# Apache → Laravel /public
-# ---------------------------------------------------------
-RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' \
-    /etc/apache2/sites-available/000-default.conf
+# Create storage directories and set permissions
+RUN mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache public/build \
+ && chmod -R 775 storage bootstrap/cache public/build
 
-RUN printf '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>\n' \
-    > /etc/apache2/conf-available/laravel.conf
-
-RUN a2enconf laravel
-
-# ---------------------------------------------------------
-# Permissions Laravel
-# ---------------------------------------------------------
-RUN mkdir -p \
-    storage/framework/cache \
-    storage/framework/sessions \
-    storage/framework/views \
-    storage/logs \
-    bootstrap/cache
-
-RUN chown -R www-data:www-data \
-    storage \
-    bootstrap/cache
-
-RUN chmod -R 775 \
-    storage \
-    bootstrap/cache
-
-# ---------------------------------------------------------
-# Entrypoint
-# ---------------------------------------------------------
+# Copy entrypoint and ensure it's executable
+COPY docker-entrypoint.sh ./
 RUN chmod +x docker-entrypoint.sh
 
 EXPOSE 80
-
 ENTRYPOINT ["./docker-entrypoint.sh"]
