@@ -1,0 +1,28 @@
+# Node and PHP deps
+node_modules
+vendor
+
+# Environment
+.env
+.env.*
+
+# Build artifacts that should be created inside the image
+public/hot
+public/storage
+public/mix-manifest.json
+
+# Runtime storage (recreate in container)
+storage/*
+
+# Git and tooling
+.git
+.gitignore
+npm-debug.log
+yarn-error.log
+
+# Tests and docs
+/tests
+README.md
+
+# Optional: ignore local built assets if you prefer building inside CI
+# public/build
