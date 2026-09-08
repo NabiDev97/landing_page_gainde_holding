@@ -8,7 +8,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 @if($service->image)
-                <img src="{{ asset('storage/'.$service->image) }}" class="card-img-top" alt="{{ $service->name ?? $service->title }}">
+                <img src="{{ secure_asset('storage/'.$service->image) }}" class="card-img-top" alt="{{ $service->name ?? $service->title }}">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $service->name ?? $service->title }}</h5>

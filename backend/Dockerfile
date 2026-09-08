@@ -41,13 +41,20 @@ WORKDIR /var/www/html
 
 # Copy composer files first for better cache
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+COPY artisan ./
+COPY bootstrap ./bootstrap
+# Install PHP deps without running composer scripts (scripts require app files).
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 # Copy application source
 COPY . .
 
 # Copy built frontend assets from node_builder
 COPY --from=node_builder /app/public/build /var/www/html/public/build
+
+# Now that the application files are present, run discovery scripts
+RUN composer dump-autoload --optimize || true
+RUN php artisan package:discover --ansi || true
 
 # Configure Apache to use Laravel public directory
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|' /etc/apache2/sites-available/000-default.conf \

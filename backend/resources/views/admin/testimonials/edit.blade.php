@@ -11,9 +11,9 @@
             <div class="mb-3">
                 @php $ttImg = null; @endphp
                 @if(!empty($testimonial->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($testimonial->photo))
-                    @php $ttImg = asset('storage/'.$testimonial->photo); @endphp
+                    @php $ttImg = secure_asset('storage/'.$testimonial->photo); @endphp
                 @elseif(!empty($testimonial->photo) && file_exists(public_path('img/'.$testimonial->photo)))
-                    @php $ttImg = asset('img/'.$testimonial->photo); @endphp
+                    @php $ttImg = secure_asset('img/'.$testimonial->photo); @endphp
                 @endif
                 @if($ttImg)
                     <img src="{{ $ttImg }}" style="height:80px" class="mb-2">

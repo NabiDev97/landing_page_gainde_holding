@@ -16,9 +16,9 @@
                     <td>
                         @php $sImg = null; @endphp
                         @if(!empty($s->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($s->image))
-                            @php $sImg = asset('storage/'.$s->image); @endphp
+                            @php $sImg = secure_asset('storage/'.$s->image); @endphp
                         @elseif(!empty($s->image) && file_exists(public_path('img/'.$s->image)))
-                            @php $sImg = asset('img/'.$s->image); @endphp
+                            @php $sImg = secure_asset('img/'.$s->image); @endphp
                         @endif
                         @if($sImg)
                             <img src="{{ $sImg }}" alt="thumb" style="width:80px;height:auto;border-radius:4px;">

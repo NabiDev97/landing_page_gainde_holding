@@ -33,7 +33,7 @@
 <div class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
     <nav class="navbar navbar-expand-lg bg-dark bg-light-radial navbar-dark py-3 py-lg-0">
         <a href="/" class="navbar-brand">
-            <h1 class="m-0 display-4 text-uppercase text-white"><img src="{{ asset('img/logo.png') }}" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
+            <h1 class="m-0 display-4 text-uppercase text-white"><img src="{{ secure_asset('img/logo.png') }}" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>

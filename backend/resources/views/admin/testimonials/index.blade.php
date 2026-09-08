@@ -10,9 +10,9 @@
                 <td>
                     @php $tImg = null; @endphp
                     @if(!empty($t->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($t->photo))
-                        @php $tImg = asset('storage/'.$t->photo); @endphp
+                        @php $tImg = secure_asset('storage/'.$t->photo); @endphp
                     @elseif(!empty($t->photo) && file_exists(public_path('img/'.$t->photo)))
-                        @php $tImg = asset('img/'.$t->photo); @endphp
+                        @php $tImg = secure_asset('img/'.$t->photo); @endphp
                     @endif
                     @if($tImg)
                         <img src="{{ $tImg }}" alt="thumb" style="width:80px;height:auto;border-radius:4px;">

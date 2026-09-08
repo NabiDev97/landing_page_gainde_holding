@@ -22,7 +22,7 @@
                     <td>{{ $project->title }}</td>
                     <td>
                         @if($project->image)
-                            <img src="{{ asset('storage/'.$project->image) }}" alt="" style="height:60px">
+                            <img src="{{ secure_asset('storage/'.$project->image) }}" alt="" style="height:60px">
                         @endif
                     </td>
                     <td>

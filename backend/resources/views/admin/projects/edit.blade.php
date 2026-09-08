@@ -17,7 +17,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Image</label>
-                @if($project->image)<div class="mb-2"><img src="{{ asset('storage/'.$project->image) }}" style="height:80px"></div>@endif
+                @if($project->image)<div class="mb-2"><img src="{{ secure_asset('storage/'.$project->image) }}" style="height:80px"></div>@endif
                 <input type="file" name="image" class="form-control">
             </div>
             <button class="btn btn-primary">Mettre à jour</button>

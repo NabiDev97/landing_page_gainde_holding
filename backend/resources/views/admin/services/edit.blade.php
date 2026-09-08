@@ -12,9 +12,9 @@
                 <label class="form-label">Image</label>
                 @php $svcImg = null; @endphp
                 @if(!empty($service->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($service->image))
-                    @php $svcImg = asset('storage/'.$service->image); @endphp
+                    @php $svcImg = secure_asset('storage/'.$service->image); @endphp
                 @elseif(!empty($service->image) && file_exists(public_path('img/'.$service->image)))
-                    @php $svcImg = asset('img/'.$service->image); @endphp
+                    @php $svcImg = secure_asset('img/'.$service->image); @endphp
                 @endif
                 @if($svcImg)
                     <div class="mb-2"><img src="{{ $svcImg }}" alt="service" style="max-width:150px;height:auto;"></div>

@@ -8,7 +8,7 @@
         <div class="col-md-4">
             <div class="card">
                 @if($post->featured_image)
-                <img src="{{ asset('storage/'.$post->featured_image) }}" class="card-img-top" alt="{{ $post->title }}">
+                <img src="{{ secure_asset('storage/'.$post->featured_image) }}" class="card-img-top" alt="{{ $post->title }}">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{ $post->title }}</h5>

@@ -9,7 +9,7 @@
     <meta content="Modèles HTML gratuits" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="{{ secure_asset('img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -20,15 +20,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ secure_asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
+    <link href="{{ secure_asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ secure_asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -71,7 +71,7 @@
     <div class="container-fluid sticky-top bg-dark bg-light-radial shadow-sm px-5 pe-lg-0">
         <nav class="navbar navbar-expand-lg bg-dark bg-light-radial navbar-dark py-3 py-lg-0">
             <a href="{{ route('home') }}" class="navbar-brand">
-                <h1 class="m-0 display-4 text-uppercase text-white"><img src="img/logo.png" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
+                <h1 class="m-0 display-4 text-uppercase text-white"><img src="{{ secure_asset('img/logo.png') }}" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -105,7 +105,7 @@
         <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="img/carousel-1.jpg" alt="Image">
+                    <img class="w-100" src="{{ secure_asset('img/carousel-1.jpg') }}" alt="Image">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <i class="fa fa-home fa-4x text-primary mb-4 d-none d-sm-block"></i>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="img/carousel-2.jpg" alt="Image">
+                    <img class="w-100" src="{{ secure_asset('img/carousel-2.jpg') }}" alt="Image">
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3" style="max-width: 900px;">
                             <i class="fa fa-tools fa-4x text-primary mb-4 d-none d-sm-block"></i>
@@ -168,7 +168,7 @@
             </div>
             <div class="col-lg-5 pb-5" style="min-height: 400px;">
                 <div class="position-relative bg-dark-radial h-100 ms-5">
-                    <img class="position-absolute w-100 h-100 mt-5 ms-n5" src="img/about.jpg" style="object-fit: cover;">
+                    <img class="position-absolute w-100 h-100 mt-5 ms-n5" src="{{ secure_asset('img/about.jpg') }}" style="object-fit: cover;">
                 </div>
             </div>
         </div>
@@ -194,11 +194,11 @@
                                 $imgSrc = null;
                             @endphp
                             @if(!empty($service->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($service->image))
-                                @php $imgSrc = asset('storage/'.$service->image); @endphp
+                                @php $imgSrc = secure_asset('storage/'.$service->image); @endphp
                             @elseif(!empty($service->image) && file_exists(public_path('img/'.$service->image)))
-                                @php $imgSrc = asset('img/'.$service->image); @endphp
+                                @php $imgSrc = secure_asset('img/'.$service->image); @endphp
                             @else
-                                @php $imgSrc = asset('img/service-1.jpg'); @endphp
+                                @php $imgSrc = secure_asset('img/service-1.jpg'); @endphp
                             @endif
                             <img class="img-fluid" src="{{ $imgSrc }}" alt="">
                             <div class="service-icon bg-white">
@@ -317,11 +317,11 @@
                             $pImg = null;
                         @endphp
                         @if(!empty($project->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($project->image))
-                            @php $pImg = asset('storage/'.$project->image); @endphp
+                            @php $pImg = secure_asset('storage/'.$project->image); @endphp
                         @elseif(!empty($project->image) && file_exists(public_path('img/'.$project->image)))
-                            @php $pImg = asset('img/'.$project->image); @endphp
+                            @php $pImg = secure_asset('img/'.$project->image); @endphp
                         @else
-                            @php $pImg = asset('img/portfolio-1.jpg'); @endphp
+                            @php $pImg = secure_asset('img/portfolio-1.jpg'); @endphp
                         @endif
                         <img class="img-fluid w-100" src="{{ $pImg }}" alt="">
                         <a class="portfolio-title shadow-sm" href="{{ route('projects.show', $project) }}">
@@ -362,15 +362,15 @@
                                         $mImg = null;
                                     @endphp
                                     @if(!empty($member->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($member->image))
-                                        @php $mImg = asset('storage/'.$member->image); @endphp
+                                        @php $mImg = secure_asset('storage/'.$member->image); @endphp
                                     @elseif(!empty($member->image) && file_exists(public_path('img/'.$member->image)))
-                                        @php $mImg = asset('img/'.$member->image); @endphp
+                                        @php $mImg = secure_asset('img/'.$member->image); @endphp
                                     @elseif(!empty($member->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($member->photo))
-                                        @php $mImg = asset('storage/'.$member->photo); @endphp
+                                        @php $mImg = secure_asset('storage/'.$member->photo); @endphp
                                     @elseif(!empty($member->photo) && file_exists(public_path('img/'.$member->photo)))
-                                        @php $mImg = asset('img/'.$member->photo); @endphp
+                                        @php $mImg = secure_asset('img/'.$member->photo); @endphp
                                     @else
-                                        @php $mImg = asset('img/team-1.jpg'); @endphp
+                                        @php $mImg = secure_asset('img/team-1.jpg'); @endphp
                                     @endif
                                     <img class="position-absolute w-100 h-100" src="{{ $mImg }}" style="object-fit: cover;">
                             </div>
@@ -415,15 +415,15 @@
                                 $tmImg = null;
                             @endphp
                             @if(!empty($t->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($t->image))
-                                @php $tmImg = asset('storage/'.$t->image); @endphp
+                                @php $tmImg = secure_asset('storage/'.$t->image); @endphp
                             @elseif(!empty($t->image) && file_exists(public_path('img/'.$t->image)))
-                                @php $tmImg = asset('img/'.$t->image); @endphp
+                                @php $tmImg = secure_asset('img/'.$t->image); @endphp
                             @elseif(!empty($t->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($t->photo))
-                                @php $tmImg = asset('storage/'.$t->photo); @endphp
+                                @php $tmImg = secure_asset('storage/'.$t->photo); @endphp
                             @elseif(!empty($t->photo) && file_exists(public_path('img/'.$t->photo)))
-                                @php $tmImg = asset('img/'.$t->photo); @endphp
+                                @php $tmImg = secure_asset('img/'.$t->photo); @endphp
                             @else
-                                @php $tmImg = asset('img/testimonial.jpg'); @endphp
+                                @php $tmImg = secure_asset('img/testimonial.jpg'); @endphp
                             @endif
                             <img src="{{ $tmImg }}" class="rounded-circle me-3" width="60" height="60" alt="">
                             <div>

@@ -8,15 +8,15 @@
             @php
                 $memberImage = null;
                 if (!empty($m->photo) && \Illuminate\Support\Facades\Storage::disk('public')->exists($m->photo)) {
-                    $memberImage = asset('storage/' . $m->photo);
+                    $memberImage = secure_asset('storage/' . $m->photo);
                 } elseif (!empty($m->image) && \Illuminate\Support\Facades\Storage::disk('public')->exists($m->image)) {
-                    $memberImage = asset('storage/' . $m->image);
+                    $memberImage = secure_asset('storage/' . $m->image);
                 } elseif (!empty($m->photo) && file_exists(public_path('img/' . $m->photo))) {
-                    $memberImage = asset('img/' . $m->photo);
+                    $memberImage = secure_asset('img/' . $m->photo);
                 } elseif (!empty($m->image) && file_exists(public_path('img/' . $m->image))) {
-                    $memberImage = asset('img/' . $m->image);
+                    $memberImage = secure_asset('img/' . $m->image);
                 } else {
-                    $memberImage = asset('img/team-1.jpg');
+                    $memberImage = secure_asset('img/team-1.jpg');
                 }
             @endphp
             <div class="col-md-3 text-center">

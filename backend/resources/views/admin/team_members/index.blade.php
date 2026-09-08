@@ -9,7 +9,7 @@
             <tr><td>{{ $m->id }}</td>
                 <td>
                     @if($m->photo)
-                        <img src="{{ asset('storage/'.$m->photo) }}" alt="thumb" style="width:80px;height:auto;border-radius:4px;">
+                        <img src="{{ secure_asset('storage/'.$m->photo) }}" alt="thumb" style="width:80px;height:auto;border-radius:4px;">
                     @else
                         —
                     @endif

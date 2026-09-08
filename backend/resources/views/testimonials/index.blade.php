@@ -9,7 +9,7 @@
             <div class="card p-3">
                 <p>{{ $t->message }}</p>
                 <div class="d-flex align-items-center">
-                    <img src="{{ $t->photo ? asset('storage/'.$t->photo) : asset('img/team-1.jpg') }}" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+                    <img src="{{ $t->photo ? secure_asset('storage/'.$t->photo) : secure_asset('img/team-1.jpg') }}" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
                     <div>
                         <strong>{{ $t->name }}</strong><br>
                         <small class="text-muted">{{ $t->position }}</small>
