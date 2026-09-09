@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Mail\QuoteRequestMail;
+use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Mockery;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -71,5 +73,30 @@ class QuoteRequestTest extends TestCase
             'email' => 'client@example.com',
             'subject' => 'Demande de devis - Construction Nouvelle',
         ]);
+    }
+
+    public function test_admin_can_view_and_download_quote_requests(): void
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+
+        $contact = Contact::create([
+            'name' => 'Amadou Fall',
+            'email' => 'quote-admin@example.com',
+            'phone' => '+221 77 999 88 77',
+            'subject' => 'Demande de devis - Extension commerciale',
+            'message' => "Type de projet : Extension commerciale\nAdresse du projet : Dakar\nSurface : 220 m²\nBudget estimé : 25000000\nDate de début souhaitée : 2026-11-01\nDélai prévu : 8 mois\n\nDescription du projet :\nBâtiment industriel à Dakar.",
+        ]);
+
+        $response = $this->actingAs($admin)->get('/admin/contacts');
+
+        $response->assertOk();
+        $response->assertSeeText('Demande de devis');
+        $response->assertSee('quote-admin@example.com');
+
+        $download = $this->actingAs($admin)->get('/admin/contacts/' . $contact->id . '/download');
+
+        $download->assertOk();
+        $download->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringContainsString('demande-devis-', $download->headers->get('Content-Disposition'));
     }
 }

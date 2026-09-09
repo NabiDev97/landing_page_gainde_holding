@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialControll
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\PageSectionController as AdminPageSectionController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +70,9 @@ Route::middleware('auth')->group(function () {
     // Admin CRUD routes (protected by is_admin middleware)
     Route::middleware('is_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+        Route::get('contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
+        Route::get('contacts/{contact}/download', [AdminContactController::class, 'download'])->name('contacts.download');
         Route::resource('projects', AdminProjectController::class);
         Route::resource('services', AdminServiceController::class);
         Route::resource('testimonials', AdminTestimonialController::class);
