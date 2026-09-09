@@ -2,19 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Mail\QuoteRequestMail;
+use App\Jobs\SendQuoteRequestEmail;
 use App\Models\Contact;
 use App\Models\User;
-use Illuminate\Support\Facades\Mail;
-use Mockery;
-use Symfony\Component\Mailer\Exception\TransportException;
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 
 class QuoteRequestTest extends TestCase
 {
-    public function test_quote_request_is_sent_to_the_company_email_with_pdf_attachment(): void
+    public function test_quote_request_is_dispatched_for_asynchronous_email_processing(): void
     {
-        Mail::fake();
+        Bus::fake();
 
         $response = $this->post('/contact', [
             'name' => 'Moussa Diop',
@@ -37,12 +35,9 @@ class QuoteRequestTest extends TestCase
             'subject' => 'Demande de devis - Construction Nouvelle',
         ]);
 
-        Mail::assertSentCount(1);
-        Mail::assertSent(QuoteRequestMail::class, function (QuoteRequestMail $mail) {
-            $mail->build();
-
-            $this->assertSame('mougaye1225@gmail.com', $mail->to[0]['address'] ?? null);
-            $this->assertNotEmpty($mail->rawAttachments);
+        Bus::assertDispatched(SendQuoteRequestEmail::class, function (SendQuoteRequestEmail $job) {
+            $this->assertSame('client@example.com', $job->contact->email);
+            $this->assertSame('Construction Nouvelle', $job->validated['project_type']);
 
             return true;
         });
@@ -50,8 +45,7 @@ class QuoteRequestTest extends TestCase
 
     public function test_quote_request_is_saved_even_when_mail_transport_fails(): void
     {
-        Mail::shouldReceive('to')->once()->with('mougaye1225@gmail.com')->andReturnSelf();
-        Mail::shouldReceive('send')->once()->with(Mockery::type(QuoteRequestMail::class))->andThrow(new TransportException('Connection timed out'));
+        Bus::fake();
 
         $response = $this->post('/contact', [
             'name' => 'Moussa Diop',
@@ -73,6 +67,8 @@ class QuoteRequestTest extends TestCase
             'email' => 'client@example.com',
             'subject' => 'Demande de devis - Construction Nouvelle',
         ]);
+
+        Bus::assertDispatched(SendQuoteRequestEmail::class);
     }
 
     public function test_admin_can_view_and_download_quote_requests(): void

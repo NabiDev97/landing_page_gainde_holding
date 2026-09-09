@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\QuoteRequestMail;
+use App\Jobs\SendQuoteRequestEmail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Symfony\Component\Mailer\Exception\TransportException;
 
 class ContactController extends Controller
 {
@@ -62,16 +59,7 @@ class ContactController extends Controller
             'message' => $projectDetails . "\n\nDescription du projet :\n" . $validated['details'],
         ]);
 
-        try {
-            Mail::to('mougaye1225@gmail.com')
-                ->send(new QuoteRequestMail($contact, $validated));
-        } catch (TransportException $e) {
-            Log::error('Quote request email could not be sent.', [
-                'contact_id' => $contact->id,
-                'email' => $validated['email'],
-                'error' => $e->getMessage(),
-            ]);
-        }
+        SendQuoteRequestEmail::dispatch($contact, $validated);
 
         return redirect()->back()->with('success', 'Votre demande de devis a bien été enregistrée. Nous vous contacterons bientôt.');
     }

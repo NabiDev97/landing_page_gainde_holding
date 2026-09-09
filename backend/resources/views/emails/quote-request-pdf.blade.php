@@ -4,17 +4,87 @@
     <meta charset="UTF-8">
     <title>Demande de devis</title>
     <style>
-        body { font-family: Arial, sans-serif; color: #222; margin: 30px; }
-        .header { border-bottom: 2px solid #f97316; padding-bottom: 10px; margin-bottom: 25px; }
-        h1 { font-size: 24px; color: #111827; }
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 10px 8px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
-        .label { font-weight: bold; width: 220px; }
+        body {
+            font-family: Arial, sans-serif;
+            color: #111827;
+            margin: 0;
+            padding: 30px 35px 20px;
+            background: #ffffff;
+        }
+        .header {
+            display: table;
+            width: 100%;
+            border-bottom: 2px solid #f59e0b;
+            padding-bottom: 16px;
+            margin-bottom: 22px;
+        }
+        .logo-wrap {
+            display: table-cell;
+            width: 92px;
+            vertical-align: middle;
+        }
+        .logo-wrap svg {
+            width: 78px;
+            height: 78px;
+            display: block;
+        }
+        .title-wrap {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 14px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #111827;
+            line-height: 1.3;
+        }
+        .subtitle {
+            margin-top: 4px;
+            font-size: 11px;
+            color: #6b7280;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 11px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+        .label {
+            width: 220px;
+            font-weight: bold;
+            color: #111827;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Demande de devis - GAÏNDE-HOLDING</h1>
+        <div class="logo-wrap">
+            <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GAÏNDE-HOLDING">
+                <rect x="5" y="5" width="80" height="80" rx="12" fill="#111827"/>
+                <rect x="16" y="16" width="58" height="58" rx="10" fill="#f59e0b"/>
+                <path d="M29 58 L45 24 L61 58" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M34 46 H56" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+                <text x="45" y="74" text-anchor="middle" font-size="9" font-family="Arial, sans-serif" font-weight="700" fill="#111827">GH</text>
+            </svg>
+        </div>
+        <div class="title-wrap">
+            <h1>Demande de devis</h1>
+            <div class="subtitle">GAÏNDE-HOLDING</div>
+        </div>
     </div>
 
     <table>
@@ -56,7 +126,7 @@
         </tr>
         <tr>
             <td class="label">Description détaillée</td>
-            <td>{{ $validated['details'] }}</td>
+            <td><pre>{{ $validated['details'] }}</pre></td>
         </tr>
     </table>
 </body>
