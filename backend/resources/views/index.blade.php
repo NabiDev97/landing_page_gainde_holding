@@ -448,7 +448,7 @@
                 <a href="{{ route('home') }}" class="navbar-brand">
                     <h1 class="m-0 display-4 text-uppercase text-white"><img src="img/logo.png" alt="GAÏNDE-HOLDING" style="height: 70px; margin-right: 15px;">GAÏNDE-HOLDING</h1>
                 </a>
-                <p>Aliquyam sed elitr elitr erat sed diam ipsum eirmod eos lorem nonumy. Tempor sea ipsum diam  sed clita dolore eos dolores magna erat dolore sed stet juste et dolor.</p>
+                <p>Nous accompagnons les entreprises et les projets à forte ambition dans la création de solutions durables, performantes et pensées pour un avenir plus responsable.</p>
                 <p><i class="fa fa-map-marker-alt me-2"></i>Colobane, Dakar, Sénégal</p>
                 <p><i class="fa fa-phone-alt me-2"></i>+221 77 781 95 95</p>
                 <p><i class="fa fa-envelope me-2"></i>contact@gaindeholding.com</p>
