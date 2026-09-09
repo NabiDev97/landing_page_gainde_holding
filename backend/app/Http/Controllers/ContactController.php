@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\QuoteRequestMail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -50,13 +52,16 @@ class ContactController extends Controller
             'Délai prévu' => isset($validated['duration_months']) ? $validated['duration_months'] . ' mois' : 'Non précisé',
         ])->map(fn ($value, $label) => "$label : $value")->implode("\n");
 
-        Contact::create([
+        $contact = Contact::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
             'subject' => 'Demande de devis' . ($validated['project_type'] ? ' - ' . $validated['project_type'] : ''),
             'message' => $projectDetails . "\n\nDescription du projet :\n" . $validated['details'],
         ]);
+
+        Mail::to('mougaye1225@gmail.com')
+            ->send(new QuoteRequestMail($contact, $validated));
 
         return redirect()->back()->with('success', 'Votre demande de devis a bien été envoyée. Nous vous contacterons bientôt.');
     }
