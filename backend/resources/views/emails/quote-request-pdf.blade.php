@@ -14,7 +14,7 @@
         .header {
             display: table;
             width: 100%;
-            border-bottom: 2px solid #f59e0b;
+            border-bottom: 2px solid #C9B36B;
             padding-bottom: 16px;
             margin-bottom: 22px;
         }
@@ -75,7 +75,7 @@
         <div class="logo-wrap">
             <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GAÏNDE-HOLDING">
                 <rect x="5" y="5" width="80" height="80" rx="12" fill="#111827"/>
-                <rect x="16" y="16" width="58" height="58" rx="10" fill="#f59e0b"/>
+                <rect x="16" y="16" width="58" height="58" rx="10" fill="#C9B36B"/>
                 <path d="M29 58 L45 24 L61 58" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M34 46 H56" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
                 <text x="45" y="74" text-anchor="middle" font-size="9" font-family="Arial, sans-serif" font-weight="700" fill="#111827">GH</text>

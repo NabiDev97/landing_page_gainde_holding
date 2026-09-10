@@ -14,7 +14,7 @@
         .header {
             display: table;
             width: 100%;
-            border-bottom: 2px solid #f59e0b;
+            border-bottom: 2px solid #C9B36B;
             padding-bottom: 16px;
             margin-bottom: 22px;
         }
