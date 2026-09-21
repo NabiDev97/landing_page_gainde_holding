@@ -7,6 +7,8 @@ Cette page contient les étapes recommandées pour déployer l'application sur R
 - `APP_ENV=production`
 - `APP_URL=https://landing-page-gainde-holding.onrender.com` (important pour générer des URLs en https)
 - `APP_KEY=` (fourni depuis Render - **recommandé** pour la prod)
+- `MAIL_QUOTE_REQUEST_TO=` (destinataire des demandes de devis)
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD` (création du compte admin via seeder)
 - Optionnel pour démarrage contrôlé: `RUN_MIGRATIONS=true` / `RUN_SEEDS=true` (à utiliser explicitement)
 
 2) Comportement du conteneur
@@ -53,9 +55,5 @@ curl -I https://landing-page-gainde-holding.onrender.com/css/style.css
 - Ne pas créer automatiquement `.env` en production — fournissez `APP_KEY` et autres secrets via le panneau Render.
 - Eviter d'exécuter les migrations automatiquement en prod sans supervision.
 - Pour les environnements de test/staging, l'entrypoint gère la copie de `.env.example` et la génération d'`APP_KEY` pour faciliter les tests.
-
----
-Si vous voulez, je peux aussi :
-- committer et pousser ces changements (je vais le faire maintenant si vous confirmez),
-- ou créer une PR dédiée.
+- Créer le compte admin via le seeder : définir `ADMIN_EMAIL` et `ADMIN_PASSWORD`, puis `php artisan db:seed --class=AdminUserSeeder`.
 

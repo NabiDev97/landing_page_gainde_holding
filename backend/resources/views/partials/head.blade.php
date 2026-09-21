@@ -1,9 +1,9 @@
 <head>
     <meta charset="utf-8">
-    <title>{{ $title ?? 'GAÏNDE-HOLDING' }}</title>
+    <title>{{ $title ?? 'GAÏNDE-HOLDING - Entreprise de construction à Dakar' }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Modèles HTML gratuits" name="keywords">
-    <meta content="Modèles HTML gratuits" name="description">
+    <meta content="construction, BTP, bâtiment, rénovation, génie civil, Dakar, Sénégal, GAÏNDE-HOLDING" name="keywords">
+    <meta content="GAÏNDE-HOLDING, entreprise de construction et BTP à Dakar. Projets de bâtiment, rénovation et génie civil au Sénégal." name="description">
 
     <link href="{{ secure_asset('img/favicon.ico') }}" rel="icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">

@@ -131,4 +131,15 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Quote Request Recipient
+    |--------------------------------------------------------------------------
+    |
+    | Email address that receives quote request notifications and PDF exports.
+    |
+    */
+
+    'quote_request_to' => env('MAIL_QUOTE_REQUEST_TO', env('MAIL_FROM_ADDRESS', 'info@gaindeholding.com')),
+
 ];

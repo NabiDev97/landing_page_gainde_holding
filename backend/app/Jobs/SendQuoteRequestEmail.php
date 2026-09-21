@@ -29,7 +29,7 @@ class SendQuoteRequestEmail implements ShouldQueue
     public function handle(): void
     {
         try {
-            Mail::to('mougaye1225@gmail.com')->send(new QuoteRequestMail($this->contact, $this->validated));
+            Mail::to(config('mail.quote_request_to'))->send(new QuoteRequestMail($this->contact, $this->validated));
         } catch (TransportException $e) {
             Log::error('Quote request email could not be sent from queue.', [
                 'contact_id' => $this->contact->id,

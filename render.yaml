@@ -15,7 +15,7 @@ services:
       - key: RUN_SEEDS
         value: 'false'
       - key: APP_URL
-        value: https://example.com
+        value: https://landing-page-gainde-holding.onrender.com
       - key: VITE_API_URL
         value: ''
     buildCommand: ''
